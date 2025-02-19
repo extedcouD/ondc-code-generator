@@ -75,7 +75,10 @@ export class ConfigCompiler {
 		}
 	};
 
-	generateCode = async (valConfig: ValidationConfig) => {
+	generateCode = async (
+		valConfig: ValidationConfig,
+		codeName: string = "L1-Validations"
+	) => {
 		await this.performValidations(valConfig);
 		// Generate code based on the language
 		switch (this.language) {
@@ -83,8 +86,10 @@ export class ConfigCompiler {
 				await new TypescriptGenerator(
 					valConfig,
 					this.errorDefinitions ?? [],
-					"./generated/L1-validations"
-				).generateCode();
+					`./generated/${codeName}`
+				).generateCode({
+					codeName: codeName,
+				});
 				break;
 			default:
 				throw new Error("Language not supported");

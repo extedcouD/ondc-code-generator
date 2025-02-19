@@ -8,7 +8,10 @@ import { getVariablesFromTest as extractVariablesFromText } from "../../../utils
 import { ConfigVariable, TestObject } from "../../../types/config-types.js";
 import { ConvertArrayToString } from "../../../utils/general-utils/string-utils.js";
 import { compileInputToTs } from "./ts-ast.js";
-import { CodeGenerator } from "../classes/abstract-generator.js";
+import {
+	CodeGenerator,
+	CodeGeneratorProps,
+} from "../classes/abstract-generator.js";
 import { writeAndFormatCode } from "../../../utils/fs-utils.js";
 import { ErrorDefinition } from "../../../types/error-codes.js";
 import { MarkdownDocGenerator } from "../documentation/md-generator.js";
@@ -44,7 +47,7 @@ export class TypescriptGenerator extends CodeGenerator {
 			);
 		}
 	};
-	generateCode = async () => {
+	generateCode = async (codeConfig: CodeGeneratorProps) => {
 		const jsonPathUtilsCode = readFileSync(
 			path.resolve(__dirname, "./templates/json-path-utils.mustache"),
 			"utf-8"
@@ -90,7 +93,8 @@ export class TypescriptGenerator extends CodeGenerator {
 			this.rootPath,
 			"index.ts",
 			this.generateIndexFile(
-				Object.keys(this.validationConfig[ConfigSyntax.Tests])
+				Object.keys(this.validationConfig[ConfigSyntax.Tests]),
+				codeConfig.codeName
 			),
 			"typescript"
 		);
@@ -232,12 +236,15 @@ export class TypescriptGenerator extends CodeGenerator {
 		}
 		return result;
 	}
-	private generateIndexFile(apis: string[]) {
+	private generateIndexFile(
+		apis: string[],
+		functionName: string = "L1Validations"
+	) {
 		const importsCode = apis
 			.map((api) => `import ${api} from "./api-tests/${api}";`)
 			.join("\n");
 		const masterFunction = `
-				export function performL1Validations(action: string, payload: any,allErrors = false, externalData = {}) {
+				export function perform${functionName}(action: string, payload: any,allErrors = false, externalData = {}) {
 					switch (action) {
 						${apis
 							.map(
