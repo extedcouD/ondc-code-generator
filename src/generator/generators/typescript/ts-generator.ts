@@ -46,11 +46,11 @@ export class TypescriptGenerator extends CodeGenerator {
 	};
 	generateCode = async () => {
 		const jsonPathUtilsCode = readFileSync(
-			path.resolve(__dirname, "./templates/json-path-utils.ts"),
+			path.resolve(__dirname, "./templates/json-path-utils.mustache"),
 			"utf-8"
 		);
 		const validtionUtils = readFileSync(
-			path.resolve(__dirname, "./templates/validation-utils.ts"),
+			path.resolve(__dirname, "./templates/validation-utils.mustache"),
 			"utf-8"
 		);
 		const typesTemplate = readFileSync(

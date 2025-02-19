@@ -1,5 +1,5 @@
 import { JSONSchema7 } from "json-schema";
-import { BUID_TYPE } from "../types/build.js";
+import { BUILD_TYPE } from "../types/build.js";
 import { loadAndDereferenceYaml } from "../utils/config-utils/yaml.js";
 import { SchemaExtactionService } from "../services/schema-service.js";
 import { ErrorDefinition } from "../types/error-codes.js";
@@ -25,7 +25,7 @@ const defaultConfig: CodeGeneratorConfig = {
 };
 
 export class ConfigCompiler {
-	buildData: BUID_TYPE | undefined;
+	buildData: BUILD_TYPE | undefined;
 	jsonSchemas: Record<string, JSONSchema7> | undefined;
 	possibleJsonPaths: Record<string, string[]> | undefined;
 	errorDefinitions: ErrorDefinition[] | undefined;
@@ -41,7 +41,7 @@ export class ConfigCompiler {
 		generatorConfig: Partial<CodeGeneratorConfig> = {}
 	) => {
 		const finalConfig = { ...defaultConfig, ...generatorConfig };
-		this.buildData = await loadAndDereferenceYaml<BUID_TYPE>(buildYaml);
+		this.buildData = await loadAndDereferenceYaml<BUILD_TYPE>(buildYaml);
 		this.jsonSchemas = await this.SchemaExtactionService.extractSchemas(
 			this.buildData,
 			finalConfig.removeRequiredfromSchema,
