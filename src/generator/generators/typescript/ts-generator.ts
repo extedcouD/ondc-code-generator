@@ -236,10 +236,12 @@ export class TypescriptGenerator extends CodeGenerator {
 		}
 		return result;
 	}
+
 	private generateIndexFile(
 		apis: string[],
 		functionName: string = "L1Validations"
 	) {
+		functionName = functionName.replace(/[^a-zA-Z0-9_]/g, "");
 		const importsCode = apis
 			.map((api) => `import ${api} from "./api-tests/${api}";`)
 			.join("\n");

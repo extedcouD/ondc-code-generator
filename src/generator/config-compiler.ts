@@ -11,7 +11,6 @@ import { TypescriptGenerator } from "./generators/typescript/ts-generator.js";
 import { ConfigValidator } from "./validators/config-validator.js";
 import { writeAndFormatCode } from "../utils/fs-utils.js";
 import { readFileSync } from "fs";
-import path from "path";
 import Mustache from "mustache";
 
 type CodeGeneratorConfig = {
@@ -122,6 +121,11 @@ export class ConfigCompiler {
 		);
 		console.log(actions);
 		const l0 = Mustache.render(template, { actions });
-		writeAndFormatCode(`./generated/L0-schemas`, `index.ts`, l0, "typescript");
+		await writeAndFormatCode(
+			`./generated/L0-schemas`,
+			`index.ts`,
+			l0,
+			"typescript"
+		);
 	};
 }
