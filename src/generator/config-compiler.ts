@@ -13,6 +13,10 @@ import { writeAndFormatCode } from "../utils/fs-utils.js";
 import { readFileSync } from "fs";
 import Mustache from "mustache";
 
+import { fileURLToPath } from "url";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 type CodeGeneratorConfig = {
 	removeRequiredfromSchema: boolean;
 	removeEnumsfromSchema: boolean;
@@ -116,7 +120,10 @@ export class ConfigCompiler {
 			};
 		});
 		const template = readFileSync(
-			"/Users/rudranshsinghal/ondc/automation-utility/official-code/code-generator/src/generator/generators/typescript/templates/schema-template.mustache",
+			path.resolve(
+				__dirname,
+				"../generator/generators/typescript/templates/schema-template.mustache"
+			),
 			"utf-8"
 		);
 		console.log(actions);
