@@ -10,7 +10,7 @@ import { SupportedLanguages } from "../types/compiler-types.js";
 import { TypescriptGenerator } from "./generators/typescript/ts-generator.js";
 import { ConfigValidator } from "./validators/config-validator.js";
 import { writeAndFormatCode } from "../utils/fs-utils.js";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import Mustache from "mustache";
 
 import { fileURLToPath } from "url";
@@ -53,6 +53,10 @@ export class ConfigCompiler {
 		this.possibleJsonPaths = this.SchemaExtactionService.extractPossiblePaths(
 			this.jsonSchemas
 		);
+		// writeFileSync(
+		// 	"./validPaths.json",
+		// 	JSON.stringify(this.possibleJsonPaths, null, 2)
+		// );
 		const errors = this.buildData["x-errorcodes"];
 		this.errorDefinitions = errors.code;
 	};
